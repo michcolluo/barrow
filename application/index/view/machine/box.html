@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<!--<link rel="stylesheet" type="text/css" href="__BS__/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="__DT__/datatables.min.css"/>
+		<script src="__DT__/jquery-1.12.4.js"></script>
+		<script src="__DT__/datatables.min.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="__HUI__/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_LIB__/Hui-iconfont/1.0.8/iconfont.min.css" />
+		<!--[if lt IE 9]>
+		<link href="http://static.h-ui.net/h-ui/css/H-ui.ie.css" rel="stylesheet" type="text/css" />
+		<![endif]-->
+		<script type="text/javascript" src="__HUI_LIB__/jquery/1.9.1/jquery.min.js"></script>
+		<script src="__HUI_LIB__/layer/2.4/layer.js"></script>
+	</head>
+	<body>
+		<div id="container">
+
+			<div class="panel-body">
+				<form class="form form-horizontal">
+					<input type="hidden" name="id" value="{$data.id}"/>
+					<div class="row cl">
+						<label class="form-label col-xs-3">宽</label>
+						<div class="formControls col-xs-8">
+							<input type="text" name="width" class="input-text" value="{$data.width}">
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label col-xs-3">高</label>
+						<div class="formControls col-xs-8">
+							<input type="text" name="height" class="input-text" value="{$data.height}">
+						</div>
+					</div>
+					<div class="row cl text-c">
+						<input type="submit" class="btn btn-primary radius" value="保存"/>
+						<input type="button" class="btn btn-default radius exit" value="关闭"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script>
+		$("form").submit(function(){
+	        $.ajax({
+	        	type: 'POST', 
+	        	data: $(this).serialize(), 
+	        	url: "{:url('machine/box_save')}",
+	            success: function (data) { 
+					if(data==1){
+						layer.msg('修改成功!',{icon:1,time:1000});
+					}else{
+						layer.msg('修改失败!',{icon:2,time:1000});
+					}
+	            },
+	            error: function (xhr) {
+	                
+	            } 
+	        });
+	        return false;
+		})
+		$(".exit").click(function(){
+			var index=parent.layer.getFrameIndex(window.name);
+			parent.layer.close(index);
+		})
+	</script>
+</html>

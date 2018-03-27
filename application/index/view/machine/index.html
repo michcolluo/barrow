@@ -1,0 +1,101 @@
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<style>
+			.div_machine {
+				/*width: 100px;
+				height: 100px;
+				background-color: #4D4D4D;*/
+				position: absolute;
+				cursor: pointer;
+				/*-webkit-box-shadow: 3px 3px 0px 3px #C7C7C7;
+				box-shadow: 3px 3px 3px 0px #C7C7C7;*/
+			}
+			#parent {
+				width: {$box.width}px;
+				height: {$box.height}px;
+				border: 1px solid #CDCDCD;
+				position: relative;
+				margin: 0 auto;
+			}
+		</style>
+		<!--<link rel="stylesheet" type="text/css" href="__BS__/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="__DT__/datatables.min.css"/>
+		<script src="__DT__/jquery-1.12.4.js"></script>
+		<script src="__DT__/datatables.min.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="__HUI__/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_LIB__/Hui-iconfont/1.0.8/iconfont.min.css" />
+		<!--[if lt IE 9]>
+		<link href="http://static.h-ui.net/h-ui/css/H-ui.ie.css" rel="stylesheet" type="text/css" />
+		<![endif]-->
+		<script type="text/javascript" src="__HUI_LIB__/jquery/1.9.1/jquery.min.js"></script>
+		<script src="__HUI_LIB__/layer/2.4/layer.js"></script>
+		<script src="__INDEX__/drag.js"></script>
+	</head>
+
+	<body style="height: 100%">
+		<div id="parent">
+			{volist name='machine_list' id='vo'}
+			<div class="div_machine text-c" id="{$vo.id}" style="top: {$vo.top}; left: {$vo.left};">
+				<img src="__MachineUpload__/{$vo.machine_type}-{$vo.status}.png" style="display: block"/>
+				<label>{$vo.machine_name}</label>
+			</div>
+			{/volist}
+		</div>
+		<div class="text-r" style="position:fixed;right:20px;top:0;background:rgba(0,0,0,.2);padding:10px;border-radius:0 0 5px 5px">
+			<a href="javascript:void(0);" class="btn btn-primary radius save" ><i class="Hui-iconfont Hui-iconfont-save"></i>保存</a>
+			<a href="javascript:void(0);" class="btn btn-primary radius refresh" ><i class="Hui-iconfont Hui-iconfont-home"></i>刷新</a>
+			<a href="javascript:void(0);" class="btn btn-primary radius set_box" ><i class="Hui-iconfont Hui-iconfont-manage"></i>设置厂房尺寸</a>
+		</div>
+		<script>
+			$('.refresh').click(function(){
+				alert(app.hello);
+				window.location.reload();	
+			})
+			$('.set_box').click(function(){
+			    layer.open({
+			      type: 2,
+			      title: '设置厂房尺寸',
+			      area: ['400px', '260px'],
+			      shadeClose: true, //点击遮罩关闭
+			      content: "{:url('Machine/box')}"
+			    });
+			})
+			$('.save').click(function(){
+				var obj=[];
+				$(".div_machine").each(function(){
+					obj.push({
+						"id": $(this).attr("id"),
+						"top": $(this).position().top,
+						"left": $(this).position().left
+					})
+				});
+				$.ajax({
+					type:"post",
+					url:"{:url('Machine/save_position')}",
+					data:{ms:obj},
+					async:true,
+					success:function(data){
+						if(data==1){
+							layer.msg('保存成功!',{icon:1,time:1000});
+						}else{
+							layer.msg('保存失败!',{icon:2,time:1000});
+						}
+					},
+					error:function(){
+						
+					}
+				});
+			})
+		</script>
+		<form action="http://10.209.130.4:8088/api/client/renewBatc" method="post" enctype="">
+			<input type="text" name="common"/>
+			<input type="submit" />
+		</form>
+	</body>
+
+</html>

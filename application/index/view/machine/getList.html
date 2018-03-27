@@ -1,0 +1,101 @@
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>生产设备列表</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<!--<link rel="stylesheet" type="text/css" href="__BS__/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="__DT__/datatables.min.css"/>
+		<script src="__DT__/jquery-1.12.4.js"></script>
+		<script src="__DT__/datatables.min.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="__HUI__/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_LIB__/Hui-iconfont/1.0.8/iconfont.min.css" />
+		<!--[if lt IE 9]>
+		<link href="http://static.h-ui.net/h-ui/css/H-ui.ie.css" rel="stylesheet" type="text/css" />
+		<![endif]-->
+		<script type="text/javascript" src="__HUI_LIB__/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="__HUI_LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script>
+		<script src="__HUI_LIB__/layer/2.4/layer.js"></script>
+	</head>
+
+	<body style="margin-top: 10px;">
+		<div class="container">
+			<table class="table table-border table-bordered table-hover">
+		        <thead>
+		            <tr>
+		                <th>ID</th>
+		                <th>设备编号</th>
+		                <th>设备名称</th>
+		                <th>设备类型</th>
+		                <th>设备状态</th>
+		                <th>操作</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		        	{volist name='machine_list' id='vo'}
+		            <tr>
+		                <td>{$vo.id}</td>
+		                <td>{$vo.machine_code}</td>
+		                <td>{$vo.machine_name}</td>
+		                <td>{$vo.machine_type}</td>
+		                <td>{$vo.status}</td>
+		                <td>
+		                	<a href="#" onclick="add('{:url('Machine/add')}')"><i class="Hui-iconfont Hui-iconfont-add"></i></a>
+		                	<a href="#" onclick="edit('{:url('Machine/edit', array('id'=>$vo.id))}')"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+		                	<a href="#" onclick="del(this,'{$vo.id}')"><i class="Hui-iconfont Hui-iconfont-del2"></i></a>
+		                </td>
+		            </tr>
+		            {/volist}
+		        </tbody>
+		    </table>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    $('.table').DataTable({
+	            "ordering": true,
+		   });
+		});
+		function add(url){
+		    layer.open({
+		      type: 2,
+		      title: '新增设备',
+		      area: ['400px', '360px'],
+		      shadeClose: true, //点击遮罩关闭
+		      content: url
+		    });
+		}
+		function edit(url){
+		    layer.open({
+		      type: 2,
+		      title: '修改设备',
+		      area: ['400px', '360px'],
+		      shadeClose: true, //点击遮罩关闭
+		      content: url
+		    });
+		}
+		function del(obj, id){
+			layer.confirm('是否删除该设备？', {icon: 3, title:'提示'}, function(index){   
+				$.ajax({
+					type:"post",
+					url:"{:url('Machine/delete')}",
+					data:{id:id},
+					async:true,
+					success:function(data){
+						if(data==1){
+							layer.msg('删除成功!',{icon:1,time:1000});
+							$(obj).parents("tr").remove();
+						}else{
+							layer.msg('删除失败!',{icon:2,time:1000});
+						}
+					},
+					error:function(){
+						
+					}
+				});
+				layer.close(index);
+			});  	
+		}
+	</script>
+</html>
