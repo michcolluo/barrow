@@ -1,0 +1,36 @@
+{volist name='list' id='vo0'}
+{if condition="$vo0.level eq 1"}
+<dl class="permission-list">
+	<dt>
+		<label>
+			<input type="checkbox" value="A{$vo0.id}" name="user-Character-0" id="user-Character-0">
+			{$vo0.authority_name}
+		</label>
+	</dt>
+	<dd>
+		{volist name='list' id='vo1'}
+		{if condition="($vo1.pid eq $vo0.id)"}
+		<dl class="cl permission-list2">
+			<dt>
+				<label class="">
+					<input type="checkbox" value="B{$vo1.id}" name="user-Character-0-0" id="user-Character-0-0">
+					{$vo1.authority_name}
+				</label>
+			</dt>
+			<dd>
+				{volist name='list' id='vo2'}
+				{if condition="($vo2.pid eq $vo1.id)"}
+				<label class="">
+					<input type="checkbox" value="C{$vo2.id}" name="user-Character-0-0-0" id="user-Character-0-0-0">
+					{$vo2.authority_name}
+				</label>
+				{/if}
+				{/volist}
+			</dd>
+		</dl>
+		{/if}
+		{/volist}
+	</dd>
+</dl>
+{/if}
+{/volist}
