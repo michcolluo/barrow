@@ -31,16 +31,17 @@
 	<body>
 		<article class="cl pd-20">
 			<form class="form form-horizontal">
+				<input type="hidden" name="id" value="{$id}"/>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="" placeholder="" name="role_name" datatype="*4-16" nullmsg="用户账户不能为空">
+						<input type="text" class="input-text" value="{$role_name}" placeholder="" name="role_name" datatype="*4-16" nullmsg="用户账户不能为空">
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-3">备注：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="" placeholder="" id="" name="">
+						<input type="text" class="input-text" value="{$description}" placeholder="" id="" name="description">
 					</div>
 				</div>
 				<div class="row cl">
@@ -102,8 +103,8 @@
 	        	type: 'POST', 
 	        	data: cont,
 	      		dataType: 'json',
-	        	url: "{:url('role/insert')}",
-	            success: function (data) { 
+	        	url: "{:url('role/update')}",
+	            success: function (data) {
 	            	data = eval("("+data+")");//
 					if(data.success == 'false'){
 						layer.msg(data.msg,{icon:2,time:1000});

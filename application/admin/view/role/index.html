@@ -44,10 +44,14 @@
 			</nav>
 			<div class="Hui-article">
 				<article class="cl pd-20">
-					<div class="cl pd-5 bg-1 bk-gray"> <span class="l">
-						<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-						<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','{:url('role/add')}','800')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a> </span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
-					<div class="mt-10">
+					<div class="cl pd-5 bg-1 bk-gray">
+						<span class="l">
+							<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+							<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','{:url('role/add')}','800')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a>
+						</span> 
+						<span class="r">共有数据：<strong>{$role_count}</strong> 条</span>
+					</div>
+					<div class="mt-10"></div>
 					<table class="table table-border table-bordered table-hover table-bg">
 						<thead>
 							<tr>
@@ -63,26 +67,31 @@
 							</tr>
 						</thead>
 						<tbody>
+							{volist name='role' id='vo'}
 							<tr class="text-c">
-								{volist name='role' id='vo'}
-								<td><input type="checkbox" value="" name=""></td>
+								<td><input type="checkbox" value="{$vo.id}" name="roleid"></td>
 								<td>{$vo.id}</td>
 								<td>{$vo.role_name}</td>
-								<td><a href="#">admin</a></td>
+								<td>
+									{volist name='userlist' id='vo_user'}
+									{if condition='($vo.id eq $vo_user.roleid)'}
+									<a href="#">{$vo_user.username}</a>
+									{/if}
+									{/volist}
+								</td>
 								<td>{$vo.description}</td>
 								<td class="f-14">
-									<a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none">
+									<a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','{:url('role/edit', array('id'=>$vo.id))}','800')" style="text-decoration:none">
 										<i class="Hui-iconfont">&#xe6df;</i>
 									</a>
-									<a title="删除" href="javascript:;" onclick="admin_role_del(this,'1')" class="ml-5" style="text-decoration:none">
+									<a title="删除" href="javascript:;" onclick="admin_role_del(this,{$vo.id})" class="ml-5" style="text-decoration:none">
 										<i class="Hui-iconfont">&#xe6e2;</i>
 									</a>
 								</td>
-								{/volist}
 							</tr>
+							{/volist}
 						</tbody>
 					</table>
-					</div>
 				</article>
 			</div>
 		</section>
@@ -97,6 +106,71 @@
 		/*管理员-角色-添加*/
 		function admin_role_add(title,url,w,h){
 			layer_show(title,url,w,h);
+		}
+		/*管理员-角色-编辑*/
+		function admin_role_edit(title,url,w,h){
+			layer_show(title,url,w,h);
+		}	
+		/*管理员-角色-删除*/
+		function admin_role_del(obj,id){
+			layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+				//此处请求后台程序，下方是成功后的前台处理……
+		        $.ajax({
+		        	type: 'POST', 
+		      		dataType: 'json',
+		      		data:{id:[id]},
+		        	url: "{:url('role/delete')}",
+		            success: function (data) {
+		            	console.log(data);
+		            	return false;
+	            		data = eval("("+data+")");//
+						if(data.success == 'false'){
+							layer.msg(data.msg,{icon:2,time:1000});
+						}else{
+							$(obj).parents("tr").remove();
+							layer.msg('已删除!',{icon:1,time:1000});
+						}
+		            },
+		            error: function (xhr) {
+		                
+		            } 
+	        	});
+
+			});
+		}
+		function datadel(){
+			var arr = new Array()
+			var i = 0;
+			$("input[type=checkbox]:checked").each(function(){ //由于复选框一般选中的是多个,所以可以循环输出 
+				if($(this).val() != ''){
+					arr.push($(this).val());
+					i++;
+				}
+			});
+			layer.confirm('角色删除须谨慎，确认要删除'+i+'个角色吗？',function(index){
+			console.log('begin');
+				//此处请求后台程序，下方是成功后的前台处理……
+		        $.ajax({
+		        	type: 'POST', 
+		      		dataType: 'json',
+		      		data:{id:arr},
+		        	url: "{:url('role/delete')}",
+		            success: function (data) {
+		            	console.log(data);
+	            		data = eval("("+data+")");//
+						if(data.success == 'false'){
+							layer.msg(data.msg,{icon:2,time:1000});
+						}else{
+							window.location.reload();
+							layer.msg('已删除!',{icon:1,time:1000});
+						}
+		            },
+		            error: function (xhr) {
+		                
+		            } 
+	        	});
+
+			});
 		}
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
