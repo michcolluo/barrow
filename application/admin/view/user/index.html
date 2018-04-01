@@ -1,0 +1,248 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="Bookmark" href="favicon.ico" >
+		<link rel="Shortcut Icon" href="favicon.ico" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__HUI_LIB__/html5.js"></script>
+		<script type="text/javascript" src="__HUI_LIB__/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="__HUI__/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_ADMIN__/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_LIB__/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_ADMIN__/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="__HUI_ADMIN__/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="__PUB__/css/style.css" />
+		<!--[if IE 6]>
+		<script type="text/javascript" src="http://__HUI_LIB__.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+		<script>DD_belatedPNG.fix('*');</script>
+		<![endif]-->
+		<!--/meta 作为公共模版分离出去-->
+		<title></title>
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+	</head>
+	<body>
+		{include file='public/_header'}
+		
+		{include file='public/_menu'}
+
+		<section class="Hui-article-box">
+			<nav class="breadcrumb">
+				<i class="Hui-iconfont Hui-iconfont-home"></i> 
+				<a href="{:url('index/index')}" class="maincolor">首页</a> 
+				<span class="c-gray en">&gt;</span>
+				管理员管理
+				<span class="c-gray en">&gt;</span>
+				管理员列表
+				<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+					<i class="Hui-iconfont">&#xe68f;</i>
+				</a>
+			</nav>
+			<div class="Hui-article">
+				<article class="cl pd-20">
+					<div class="cl pd-5 bg-1 bk-gray">
+						<span class="l">
+							<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+							<a class="btn btn-primary radius" href="javascript:;" onclick="admin_add('添加管理员','{:url('user/add')}','800','500')"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
+						</span> 
+						<span class="r">共有数据：<strong>{$user_count}</strong> 条</span>
+					</div>
+					<div class="mt-10"></div>
+					<table class="table table-border table-bordered table-hover table-bg">
+						<thead>
+							<tr>
+								<th scope="col" colspan="9">管理员列表</th>
+							</tr>
+							<tr class="text-c">
+								<th width="25"><input type="checkbox" name="" value=""></th>
+								<th width="40">ID</th>
+								<th width="150">登录名</th>
+								<th width="90">手机</th>
+								<th width="150">邮箱</th>
+								<th>角色</th>
+								<th width="130">最近登录</th>
+								<th width="100">是否已启用</th>
+								<th width="100">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{volist name='userlist' id='vo'}
+							<tr class="text-c">
+								<td><input type="checkbox" value="{$vo.userid}" name=""></td>
+								<td>{$vo.userid}</td>
+								<td>{$vo.username}</td>
+								<td>{$vo.mobile}</td>
+								<td>{$vo.email}</td>
+								<td>{$vo.role_name}</td>
+								<td>{$vo.lastdate}</td>
+								<td class="td-status">
+									{if condition='($vo.islock == 0)'}
+									<span class="label label-success radius">已启用</span>
+									{else}
+									<span class="label label-default radius">已停用</span>
+									{/if}
+								</td>
+								<td class="td-manage">
+									{if condition='($vo.islock == 0)'}
+									<a style="text-decoration:none" onClick="admin_stop(this,'{$vo.userid}')" href="javascript:;" title="停用">
+										<i class="Hui-iconfont">&#xe631;</i>
+									</a>
+									{else}
+									<a style="text-decoration:none" onClick="admin_start(this,'{$vo.userid}')" href="javascript:;" title="启用">
+										<i class="Hui-iconfont">&#xe615;</i>
+									</a>
+									{/if}
+									<a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','{:url('user/edit', array('userid' => $vo.userid))}','800','500')" class="ml-5" style="text-decoration:none">
+										<i class="Hui-iconfont">&#xe6df;</i>
+									</a>
+									<a title="删除" href="javascript:;" onclick="admin_del(this,'{$vo.userid}')" class="ml-5" style="text-decoration:none">
+										<i class="Hui-iconfont">&#xe6e2;</i>
+									</a>
+								</td>
+							</tr>
+							{/volist}
+						</tbody>
+					</table>
+				</article>
+			</div>
+		</section>
+
+		<!--_footer 作为公共模版分离出去-->
+		
+		<!--/_footer /作为公共模版分离出去-->
+		
+		<!--请在下方写此页面业务相关的脚本-->
+		<script type="text/javascript" src="__HUI_LIB__/jquery/1.9.1/jquery.min.js"></script> 
+		<script type="text/javascript" src="__HUI_LIB__/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="__HUI__/js/H-ui.js"></script> 
+		<script type="text/javascript" src="__HUI_ADMIN__/js/H-ui.admin.page.js"></script> 
+		<script type="text/javascript" src="__PUB__/js/public.js"></script> 
+		<script type="text/javascript">
+			/*管理员-增加*/
+			function admin_add(title,url,w,h){
+				layer_show(title,url,w,h);
+			}
+			/*管理员-编辑*/
+			function admin_edit(title,url,w,h){
+				layer_show(title,url,w,h);
+			}
+			/*管理员-停用*/
+			function admin_stop(obj,id){
+				layer.confirm('确认要停用吗？',function(index){
+			        $.ajax({
+			        	type: 'POST', 
+			      		dataType: 'json',
+			      		data:{id:id},
+			        	url: "{:url('user/user_stop')}",
+			            success: function (data) {
+		            		data = eval("("+data+")");//
+							if(data.success == 'false'){
+								layer.msg(data.msg,{icon:2,time:1000});
+							}else{
+								$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,'+id+')" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+								$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已停用</span>');
+								$(obj).remove();
+								layer.msg('已停用!',{icon: 5,time:1000});
+							}
+			            },
+			            error: function (xhr) {
+			                
+			            } 
+		        	});
+				});
+			}
+			
+			/*管理员-启用*/
+			function admin_start(obj,id){
+				layer.confirm('确认要启用吗？',function(index){
+					//此处请求后台程序，下方是成功后的前台处理……
+			        $.ajax({
+			        	type: 'POST', 
+			      		dataType: 'json',
+			      		data:{id:id},
+			        	url: "{:url('user/user_start')}",
+			            success: function (data) {
+		            		data = eval("("+data+")");//
+							if(data.success == 'false'){
+								layer.msg(data.msg,{icon:2,time:1000});
+							}else{
+								$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,'+id+')" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+								$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+								$(obj).remove();
+								layer.msg('已启用!', {icon: 6,time:1000});
+							}
+			            },
+			            error: function (xhr) {
+			                
+			            } 
+		        	});
+				});
+			}
+			function admin_del(obj,id){
+				layer.confirm('操作员删除须谨慎，确认要删除吗？',function(index){
+					//此处请求后台程序，下方是成功后的前台处理……
+			        $.ajax({
+			        	type: 'POST', 
+			      		dataType: 'json',
+			      		data:{id:[id]},
+			        	url: "{:url('user/delete')}",
+			            success: function (data) {
+		            		data = eval("("+data+")");//
+							if(data.success == 'false'){
+								layer.msg(data.msg,{icon:2,time:1000});
+							}else{
+								$(obj).parents("tr").remove();
+								layer.msg('已删除!',{icon:1,time:1000});
+							}
+			            },
+			            error: function (xhr) {
+			                
+			            } 
+		        	});
+	
+				});
+			}
+			function datadel(){
+				var arr = new Array()
+				var i = 0;
+				$("input[type=checkbox]:checked").each(function(){ //由于复选框一般选中的是多个,所以可以循环输出 
+					if($(this).val() != ''){
+						arr.push($(this).val());
+						i++;
+					}
+				});
+				layer.confirm('操作员删除须谨慎，确认要删除'+i+'个操作员吗？',function(index){
+					//此处请求后台程序，下方是成功后的前台处理……
+			        $.ajax({
+			        	type: 'POST', 
+			      		dataType: 'json',
+			      		data:{id:arr},
+			        	url: "{:url('user/delete')}",
+			            success: function (data) {
+		            		data = eval("("+data+")");//
+							if(data.success == 'false'){
+								layer.msg(data.msg,{icon:2,time:1000});
+							}else{
+								window.location.reload();
+								layer.msg('已删除!',{icon:1,time:1000});
+							}
+			            },
+			            error: function (xhr) {
+			                
+			            } 
+		        	});
+	
+				});
+			}
+		</script>
+		<!--/请在上方写此页面业务相关的脚本-->
+	
+	</body>
+</html>

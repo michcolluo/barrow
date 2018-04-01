@@ -2,7 +2,6 @@
 namespace app\admin\controller;
 
 use think\Controller;
-use app\admin\model\UsersModel;
 use think\Cookie;
 use think\Request;
 use think\Log;
@@ -15,8 +14,8 @@ class Login extends Controller{
     public function login(){
     	Log::record('测试日志信息');
     	$post = request()->post();
-    	$user_model = new UsersModel();
-    	$result = $user_model->login($post['username'], $post['password']);
+    	$user_model = model('user');
+    	$result = $user_model->login($post['username'], md5($post['password']));
     	if($result === config('empty_username')){
 			$jarr = [
 				'success' => 'false',
@@ -34,7 +33,13 @@ class Login extends Controller{
 				'success'=> 'false',
 				'msg'=> '登录异常！',
 				'body'=> ''
-			];		
+			];	
+    	}else if($result === config('error_islock')){
+			$jarr = [
+				'success'=> 'false',
+				'msg'=> '账号被锁定！',
+				'body'=> ''
+			];	
     	}else{
 			$jarr = [
 				'success'=> 'true',

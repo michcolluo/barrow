@@ -148,6 +148,7 @@ return [
     	'__HUI_ADMIN__' => '/Barrow/public/static/H-ui/static/h-ui.admin',
     	'__HUI_LIB__' => '/Barrow/public/static/H-ui/lib',
     	'__PUB__' => '/Barrow/public/static/public',
+    	'__TABLE__' => '/Barrow/public/static/tables',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',

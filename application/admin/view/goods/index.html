@@ -1,0 +1,158 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="Bookmark" href="favicon.ico" >
+		<link rel="Shortcut Icon" href="favicon.ico" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__HUI_LIB__/html5.js"></script>
+		<script type="text/javascript" src="__HUI_LIB__/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="__HUI__/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_ADMIN__/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_LIB__/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__HUI_ADMIN__/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="__HUI_ADMIN__/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="__PUB__/css/style.css" />
+		<!--[if IE 6]>
+		<script type="text/javascript" src="http://__HUI_LIB__.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+		<script>DD_belatedPNG.fix('*');</script>
+		<![endif]-->
+		<!--/meta 作为公共模版分离出去-->
+		<title></title>
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+	</head>
+	<body>
+		{include file='public/_header'}
+		
+		{include file='public/_menu'}
+
+		<section class="Hui-article-box">
+			<nav class="breadcrumb">
+				<i class="Hui-iconfont Hui-iconfont-home"></i> 
+				<a href="{:url('index/index')}" class="maincolor">首页</a> 
+				<span class="c-gray en">&gt;</span>
+				基础资料
+				<span class="c-gray en">&gt;</span>
+				货品列表
+				<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+					<i class="Hui-iconfont">&#xe68f;</i>
+				</a>
+			</nav>
+			<div class="Hui-article">
+				<article class="cl pd-20">
+					<div class="cl pd-5 bg-1 bk-gray">
+						<span class="l">
+							<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+							<a class="btn btn-primary radius" href="javascript:;" onclick="goods_add('添加货品','{:url('goods/add')}','800','500')"><i class="Hui-iconfont">&#xe600;</i> 添加货品</a>
+						</span> 
+						<span class="l ml-10">
+							<input class="input-text" id="goods_name" type="text" placeholder="请输入货品名称">
+						</span> 
+						<span class="l">
+							<a href="javascript:;" onclick="search_goods()"  class="btn btn-primary"><i class="Hui-iconfont Hui-iconfont-search2"></i>查找</a>
+						</span> 
+						<span class="r">共有数据：<strong>{$goods_count}</strong> 条</span>
+					</div>
+					<div class="mt-10"></div>
+					<input type="hidden" id="choose" />
+					<table class="table table-border table-bordered table-hover table-bg">
+
+					</table>
+				</article>
+			</div>
+		</section>
+
+		<!--_footer 作为公共模版分离出去-->
+		
+		<!--/_footer /作为公共模版分离出去-->
+		
+		<!--请在下方写此页面业务相关的脚本-->
+		<script type="text/javascript" src="__HUI_LIB__/jquery/1.9.1/jquery.min.js"></script> 
+		<script type="text/javascript" src="__HUI_LIB__/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="__HUI_LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="__HUI__/js/H-ui.js"></script> 
+		<script type="text/javascript" src="__HUI_ADMIN__/js/H-ui.admin.page.js"></script> 
+		<script type="text/javascript" src="__PUB__/js/public.js"></script> 
+		<script type="text/javascript">
+			$(function(){
+				search_goods();
+			});
+			
+			function click_check(chk_obj){
+				var choose = $("#choose");
+				var arr = choose.val().split(",");
+				if(chk_obj.prop("checked")){
+					arr.push(chk_obj.val());		
+				}else{
+					var newarr = [];
+					for(var i=0; i<arr.length; i++){
+						if(arr[i] != chk_obj.val()){
+							newarr.push(arr[i]);  
+						}
+					}
+					arr = newarr;
+				}
+				choose.val(arr.toString());
+			}
+			
+			function check_all() {
+				var check = $(".checkall").prop("checked");
+				$(".checkboxid").each(function(){
+					$(this).prop("checked", check);
+					click_check($(this));
+				});				
+			};
+			
+			function search_goods(){
+			    $.getJSON('__TABLE__/goods_list.json', null, function (json) {
+					table = $('.table').DataTable({
+						"aaSorting": [[ 1, "asc" ]],   
+	    				"bAutoWidth":false,
+	    				"bFilter":false, 
+	    				"bLengthChange":false,
+	    				"iDisplayLength":50,
+						"destroy":true,
+						"bDeferRender": true,
+						"ajax": {
+							"url": "{:url('goods/get_list')}",
+							"data": {"goods_name": $("#goods_name").val()},
+							"type": "POST"
+						},
+						"columns": json, 
+		                "createdRow": function ( row, data, index ) {
+		                    var goodsid = data["id"];
+		                    $('td', row).eq(0).html('<input type="checkbox" class="checkboxid" onclick="click_check($(this))" value="'+goodsid+'" name="goodsid">');
+							html = '<a title="编辑" href="javascript:;" onclick="goods_edit('+goodsid+')" style="text-decoration:none">';
+							html +=	'<i class="Hui-iconfont Hui-iconfont-edit"></i></a>&nbsp;&nbsp;';  
+							html += '<a title="删除" href="javascript:;" onclick="goods_del('+goodsid+')" style="text-decoration:none">';
+							html +=	'<i class="Hui-iconfont Hui-iconfont-del3"></i></a>'; 
+
+		                    $('td', row).eq($('td', row).length-1).addClass('f-14');
+		                    $('td', row).eq($('td', row).length-1).html(html);
+		                    
+		                },
+					});
+				});
+			}
+			
+			function goods_add(title,url,w,h){
+				layer_show(title,url,w,h);
+			}
+			
+			function datadel(){
+				var choose = $("#choose");
+				var arr = choose.val().split(",");
+				console.log(arr);
+			}
+		</script>
+		<!--/请在上方写此页面业务相关的脚本-->
+	
+	</body>
+</html>

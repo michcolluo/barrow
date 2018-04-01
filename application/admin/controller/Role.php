@@ -22,7 +22,7 @@ class Role extends Controller{
     	$user_model = new UsersModel();
     	$user_data = $user_model->get_user_info($username);
     	$this->assign('user', $user_data);
-		return view();
+    	return view('index', [], $user_model->get_authority($username));
     }
     
 	public function add()

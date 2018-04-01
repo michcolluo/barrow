@@ -31,34 +31,63 @@
 	<body>
 		<article class="cl pd-20">
 			<form class="form form-horizontal">
-				<input type="hidden" name="id" value="{$id}"/>
+				<input type="hidden" name="userid" value="{$user.userid}"/>s
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="{$role_name}" placeholder="" name="role_name" datatype="*4-16" nullmsg="用户账户不能为空">
+						<input type="text" class="input-text" value="{$user.username}" placeholder="" name="username" id="username">
 					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>昵称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" autocomplete="off" value="{$user.nickname}"  name="nickname">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{$user.mobile}" placeholder="" name="mobile">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" placeholder="@" name="email" value="{$user.email}">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3">角色：</label>
+					<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+						<select class="select" name="roleid" size="1">
+							{volist name='role' id='vo'}
+							<option value="{$vo.id}"
+							{if condition='($vo.id eq $user.roleid)'}
+							selected
+							{/if}
+							>{$vo.role_name}</option>
+							{/volist}
+						</select>
+						</span> </div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-3">备注：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="{$description}" placeholder="" id="" name="description">
-					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						{include file='public/_authority'}
+						<textarea name="memo" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="textarealength(this,100)">
+							{$user.memo}
+						</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
 					</div>
 				</div>
 				<div class="float_button btn-group">
-					<button type="submit" class="btn btn-primary radius">
-						<i class="icon-ok"></i>
-						&nbsp;&nbsp;保存&nbsp;&nbsp;
-					</button>
-					<button type="reset" class="btn btn-default radius">
-						<i class="icon-ok"></i>
-						&nbsp;&nbsp;取消&nbsp;&nbsp;
-					</button>
+						<button type="submit" class="btn btn-primary radius">
+							<i class="icon-ok"></i>
+							&nbsp;&nbsp;保存&nbsp;&nbsp;
+						</button>
+						<button type="reset" class="btn btn-default radius">
+							<i class="icon-ok"></i>
+							&nbsp;&nbsp;取消&nbsp;&nbsp;
+						</button>
 				</div>
 			</form>
 		</article>
@@ -70,36 +99,18 @@
 	<script type="text/javascript" src="__HUI_ADMIN__/js/H-ui.admin.page.js"></script> 
 	<script type="text/javascript" src="__PUB__/js/public.js"></script> 
 	<script type="text/javascript">
-		$(function(){
-			$(".permission-list dt input:checkbox").click(function(){
-				$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
-			});
-			$(".permission-list2 dd input:checkbox").click(function(){
-				var l =$(this).parent().parent().find("input:checked").length;
-				var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
-				if($(this).prop("checked")){
-					$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
-					$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
-				}
-				else{
-					if(l==0){
-						$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
-					}
-					if(l2==0){
-						$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
-					}
-				}
-			});
-		});
 		$("form").submit(function(){
+			if($('#username').val() == ''){
+				layer.msg('用户名不能为空', {icon:2, time:1000});
+				return false;
+			}
 			var cont = $('form').serialize();
-			console.log(cont);
 	        $.ajax({
 	        	type: 'POST', 
 	        	data: cont,
 	      		dataType: 'json',
-	        	url: "{:url('role/update')}",
-	            success: function (data) {
+	        	url: "{:url('user/update')}",
+	            success: function (data) { 
 	            	data = eval("("+data+")");//
 					if(data.success == 'false'){
 						layer.msg(data.msg,{icon:2,time:1000});
