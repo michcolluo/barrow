@@ -32,59 +32,91 @@
 		<article class="cl pd-20">
 			<form class="form form-horizontal">
 				<div class="row cl">
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>管理员：</label>
+					<label class="form-label col-xs-2 col-sm-2">货品编码：</label>
 					<div class="formControls col-xs-4 col-sm-4">
-						<input type="text" class="input-text" value="" placeholder="" name="username" id="username">
+						<input type="text" class="input-text" autocomplete="off" value="" name="goods_code" id="goods_code">
 					</div>
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>初始密码：</label>
+					<label class="form-label col-xs-2 col-sm-2">货品名称：</label>
 					<div class="formControls col-xs-4 col-sm-4">
-						<input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" name="password" id="password">
-					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>管理员：</label>
-					<div class="formControls col-xs-4 col-sm-4">
-						<input type="text" class="input-text" value="" placeholder="" name="username" id="username">
-					</div>
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>初始密码：</label>
-					<div class="formControls col-xs-4 col-sm-4">
-						<input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" name="password" id="password">
+						<input type="text" class="input-text" autocomplete="off" value="" name="goods_name" id="goods_name">
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>管理员：</label>
+					<label class="form-label col-xs-2 col-sm-2">规格型号：</label>
 					<div class="formControls col-xs-4 col-sm-4">
-						<input type="text" class="input-text" value="" placeholder="" name="username" id="username">
+						<input type="text" class="input-text" autocomplete="off" value=""name="goods_unit" id="goods_unit">
 					</div>
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>初始密码：</label>
+					<label class="form-label col-xs-2 col-sm-2">货品类别：</label>
 					<div class="formControls col-xs-4 col-sm-4">
-						<input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" name="password" id="password">
-					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>管理员：</label>
-					<div class="formControls col-xs-4 col-sm-4">
-						<input type="text" class="input-text" value="" placeholder="" name="username" id="username">
-					</div>
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>初始密码：</label>
-					<div class="formControls col-xs-4 col-sm-4">
-						<input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" name="password" id="password">
+						<input type="text" class="input-text" autocomplete="off" value="" name="goods_cate" id="goods_cate">
+
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>管理员：</label>
+					<label class="form-label col-xs-2 col-sm-2">货品类型：</label>
 					<div class="formControls col-xs-4 col-sm-4">
-						<input type="text" class="input-text" value="" placeholder="" name="username" id="username">
+						<span class="select-box">
+							<select class="select" size="1" name="goods_type">
+								<option value="">请选择类型</option>
+								{volist name='typelist' id='vo'}
+								<option value="{$vo.key}">{$vo.name}</option>
+								{/volist}
+							</select>
+						</span>
 					</div>
-					<label class="form-label col-xs-2 col-sm-2"><span class="c-red">*</span>初始密码：</label>
+					<label class="form-label col-xs-2 col-sm-2">货品颜色：</label>
 					<div class="formControls col-xs-4 col-sm-4">
-						<input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" name="password" id="password">
-					</div>	
+						<span class="select-box">
+							<select class="select" size="1" name="color">
+								<option value="">请选择颜色</option>
+								{volist name='colorlist' id='vo'}
+								<option value="{$vo.key}">{$vo.name}</option>
+								{/volist}
+							</select>
+						</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-2 col-sm-2">品牌：</label>
+					<div class="formControls col-xs-4 col-sm-4">
+						<span class="select-box">
+							<select class="select" size="1" name="brand">
+								<option value="" selected>请选择品牌</option>
+								<option value="1">黑色</option>
+								<option value="2">白色</option>
+								<option value="3">红色</option>
+							</select>
+						</span>
+					</div>
+					<label class="form-label col-xs-2 col-sm-2">重量(KG)：</label>
+					<div class="formControls col-xs-4 col-sm-4">
+						<input type="text" class="input-text" autocomplete="off" value="" name="weight" id="weight">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-2 col-sm-2">货品编码：</label>
+					<div class="formControls col-xs-4 col-sm-4">
+						<input type="text" class="input-text" value="" placeholder="" name="goods_code" id="goods_code">
+					</div>
+					<label class="form-label col-xs-2 col-sm-2">货品名称：</label>
+					<div class="formControls col-xs-4 col-sm-4">
+						<input type="text" class="input-text" autocomplete="off" value="" placeholder="密码" name="password" id="password">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-2 col-sm-2">货品编码：</label>
+					<div class="formControls col-xs-4 col-sm-4">
+						<input type="text" class="input-text" value="" placeholder="" name="goods_code" id="goods_code">
+					</div>
+					<label class="form-label col-xs-2 col-sm-2">货品名称：</label>
+					<div class="formControls col-xs-4 col-sm-4">
+						<input type="text" class="input-text" autocomplete="off" value="" placeholder="密码" name="password" id="password">
+					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-2 col-sm-2">备注：</label>
 					<div class="formControls col-xs-10 col-sm-10">
-						<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
+						<script id="editor" type="text/plain"></script>
 					</div>
 				</div>
 				<div class="float_button btn-group">
@@ -111,7 +143,23 @@
     <script type="text/javascript" charset="utf-8" src="__HUI_LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 
 	<script type="text/javascript">
-		var ue = UE.getEditor('editor');
+		var ue = UE.getEditor('editor',{
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
+            toolbars:[[
+            	'FullScreen', 'Source', 'Undo', 'Redo','bold', 'italic', 'underline', 'fontborder',
+            	'fontfamily', 'fontsize', 'insertimage','|',
+            	'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|'
+            ]],
+            //focus时自动清空初始化时的内容
+            autoClearinitialContent:true,
+            //关闭字数统计
+            wordCount:false,
+            //关闭elementPath
+            elementPathEnabled:false,
+            //默认的编辑区域高度
+            initialFrameHeight:200
+            //更多其他参数，请参考ueditor.config.js中的配置项
+        })
 
 		$("form").submit(function(){
 			if($('#username').val() == ''){

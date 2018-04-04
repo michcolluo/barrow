@@ -52,7 +52,39 @@ class Goods extends Controller
 	}
 	
 	public function add(){
+	    $type = model('type');
+	    $this->assign('typelist', $type->get_goods_type_list());
+        $this->assign('colorlist', $type->get_color_list());
 		return view();
-	}	
+	}
+
+	public function insert(){
+	    $post = request()->post();
+	    $goods = model('goods');
+	    $result = $goods->insert($post);
+	    $jarr = array();
+        if ($result == 1){
+            $jarr = [
+                'success' => 'true',
+                'msg'=> '保存成功',
+                'body'=> ''
+            ];
+        }else{
+            $jarr = [
+                'success' => 'false',
+                'msg'=> '保存失败',
+                'body'=> ''
+            ];
+        }
+        return json_encode($jarr);
+    }
+
+	public function edit($id = ''){
+        return view();
+    }
+
+    public function update(){
+
+    }
 }
 
